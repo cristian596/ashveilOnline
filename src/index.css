@@ -1,0 +1,75 @@
+﻿@import "tailwindcss";
+
+@theme {
+  /* ── Fuentes ─────────────────────────────── */
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  /* ── Colores: base (fondo y superficies en capas) ── */
+  --color-canvas: #0a090b;
+  --color-surface: #131114;
+  --color-surface-raised: #1b181c;
+  --color-surface-overlay: #251f25;
+  --color-line: #2e282e;
+
+  /* ── Colores: texto ── */
+  --color-ink: #efe8dc;
+  --color-ink-muted: #a39a90;
+  --color-ink-subtle: #7a7269;
+
+  /* ── Colores: acento ámbar/brasa ── */
+  --color-ember-300: #ffc98a;
+  --color-ember-400: #ffa94d;
+  --color-ember-500: #f08a24;
+  --color-ember-600: #c9650f;
+  --color-ember-700: #8f4309;
+
+  /* ── Colores: acento secundario azul cristal ── */
+  --color-crystal-300: #b4e0f5;
+  --color-crystal-400: #7cc4e8;
+  --color-crystal-500: #4aa3d1;
+  --color-crystal-600: #2f7ba6;
+
+  /* ── Colores: estado ── */
+  --color-danger: #e5484d;
+
+  /* ── Escala de grises (ceniza, ligeramente cálida) ── */
+  --color-ash-50: #f5f2ee;
+  --color-ash-100: #e6e1da;
+  --color-ash-200: #cdc6bd;
+  --color-ash-300: #b0a89e;
+  --color-ash-400: #8f877d;
+  --color-ash-500: #6f685f;
+  --color-ash-600: #544e47;
+  --color-ash-700: #3a3631;
+  --color-ash-800: #262320;
+  --color-ash-900: #171512;
+
+  /* ── Espaciados semánticos (p-section, max-w-content, etc.) ── */
+  --spacing-gutter: 1.25rem;
+  --spacing-section: 6rem;
+  --spacing-section-lg: 9rem;
+  --container-content: 76rem;
+  --container-prose: 40rem;
+
+  /* ── Radios ── */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.875rem;
+  --radius-pill: 999px;
+
+  /* ── Sombras ── */
+  --shadow-card: 0 1px 0 0 rgb(255 255 255 / 0.04) inset, 0 12px 32px -12px rgb(0 0 0 / 0.7);
+  --shadow-ember: 0 0 0 1px rgb(240 138 36 / 0.4), 0 8px 32px -6px rgb(240 138 36 / 0.45);
+  --shadow-crystal: 0 0 0 1px rgb(124 196 232 / 0.35), 0 8px 32px -6px rgb(124 196 232 / 0.35);
+
+  /* ── Animación: duraciones y curvas ──
+     Uso: duration-(--duration-base) ease-out-expo
+     Respeto a prefers-reduced-motion: ver README (variantes motion-safe / motion-reduce). */
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 600ms;
+  --duration-slower: 1000ms;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+}

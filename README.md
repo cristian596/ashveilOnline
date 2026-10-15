@@ -7,6 +7,7 @@ React 19 + Vite + TypeScript + Tailwind CSS v4.
 - `npm run build` — build de producción
 - `npm run lint` — oxlint
 - `npm run preview` — previsualizar el build
+- `npm run optimize:model` — regenerar `public/models/ashveil-hero.glb` desde el modelo original
 
 ## Personalizar
 - **Contenido**: todo el texto vive en `src/config/site.ts`.

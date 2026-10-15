@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "optimize:model": "gltf-transform optimize public/models/ashveil-hero-original.glb public/models/ashveil-hero.glb --config scripts/gltf-transform.config.mjs --compress meshopt --texture-size 2048 --texture-compress auto --simplify false"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -23,6 +24,7 @@
     "three": "^0.186.1"
   },
   "devDependencies": {
+    "@gltf-transform/cli": "^4.5.1",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",

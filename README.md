@@ -2,12 +2,24 @@
 
 React 19 + Vite + TypeScript + Tailwind CSS v4.
 
+## Documentación
+
+Punto de entrada: la carpeta [docs/](docs/).
+
+- [Instalación](docs/instalacion.md) — requisitos, comandos y verificación.
+- [Personalización](docs/personalizacion.md) — marca nueva y checklist.
+- [Despliegue](docs/despliegue.md) — publicar el sitio estático (Netlify).
+- [Temas](docs/temas.md) — dos paletas listas para pegar.
+- [Entrega](docs/entrega.md) — qué incluye, relleno, límites y soporte.
+- [THIRD_PARTY.md](THIRD_PARTY.md) y [LICENSE](LICENSE) — terceros y licencia (pendiente).
+
 ## Comandos
 - `npm run dev` — servidor de desarrollo
 - `npm run build` — comprueba tipos y genera el build de producción
 - `npm run lint` — oxlint + `check:tokens`
 - `npm run check:tokens` — falla si `src/components/three/palette.ts` no coincide con los colores de `@theme`
 - `npm run preview` — previsualizar el build
+- `npm run package` — genera `release/ashveil-online-template.zip` para entregar (ver [docs/instalacion.md](docs/instalacion.md#generar-el-paquete-de-entrega-npm-run-package))
 - `npm run optimize:model` — regenerar `public/models/ashveil-hero.glb` desde `source-assets/ashveil-hero-original.glb`
 
 ## Personalizar para un cliente
@@ -38,7 +50,7 @@ Todo se hace en archivos de configuración y assets; no hace falta tocar compone
 
 ### Placeholders del lazy loading y saltos de layout
 
-Mientras llega el chunk de cada sección se reserva espacio con un placeholder cuya altura mínima (`min-h-*`) se define por sección en `registry.ts`, con la escala de espaciado de Tailwind (y `svh` para «La travesía»), por ejemplo `min-h-288 sm:min-h-192 lg:min-h-184`. No dependen del texto concreto: es un suelo orientativo, así que al cambiar el contenido de una sección no hace falta remedirla. Esto limita los saltos de layout (y los desajustes de ScrollTrigger) al sustituir el placeholder por la sección real. Si el contenido de una sección queda muy lejos de ese suelo, ajusta su clase en `registry.ts`. Medido con el contenido actual en 390, 768 y 1440 px, todas las secciones están dentro de ±4 % de lo reservado (la travesía coincide exacta: 400 svh).
+Mientras llega el chunk de cada sección se reserva espacio con un placeholder cuya altura mínima (`min-h-*`) se define por sección en `registry.ts`, con la escala de espaciado de Tailwind (y `svh` para «La travesía»), por ejemplo `min-h-288 sm:min-h-192 lg:min-h-184`. No dependen del texto concreto: es un suelo orientativo, así que al cambiar el contenido de una sección no hace falta remedirla. Esto limita los saltos de layout (y los desajustes de ScrollTrigger) al sustituir el placeholder por la sección real. Si el contenido de una sección queda muy lejos de ese suelo, ajusta su clase en `registry.ts`. Medido con el contenido actual en 390, 768 y 1440 px, todas las secciones están dentro de ±4 % de lo reservado (la travesía en escritorio coincide exacta: 400 svh; en móvil, 200 svh + 19 rem, ±2 % a 360, 390 y 768 px táctil).
 
 ## Nueva marca
 

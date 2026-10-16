@@ -22,3 +22,20 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Paquete de entrega generado por `npm run package`
+release
+
+# Cachés y temporales
+*.tsbuildinfo
+*.tmp
+.cache
+.eslintcache
+.vite
+Thumbs.db
+.env
+.env.*
+!.env.example
+
+# Herramientas de sesión (no forman parte del proyecto)
+.claude

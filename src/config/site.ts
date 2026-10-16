@@ -22,6 +22,11 @@ export const site = {
       { label: 'Comunidad', href: '#comunidad' },
     ] satisfies NavLink[],
     cta: { label: 'Jugar ahora', href: '#jugar' } satisfies Cta,
+    // Botón de sonido ambiente (apagado por defecto). El estado lo anuncia aria-pressed.
+    ambient: {
+      label: 'Sonido ambiente',
+      shortLabel: 'Ambiente',
+    },
   },
   hero: {
     badge: 'Acceso anticipado próximamente',
@@ -101,6 +106,36 @@ export const site = {
       'El velo no resistió. Una noche se rasgó de horizonte a horizonte, y de la grieta cayeron brasas que no se apagan: ciudades enteras ardieron sin consumirse.',
       'Hoy los supervivientes se agrupan en gremios, rodean los fuegos eternos y rescatan lo que la ceniza no ha reclamado. Cada ruina esconde un secreto; cada secreto, un precio.',
       'Tú llegas tarde y a tiempo a la vez. El velo está herido, no muerto, y alguien tendrá que decidir si se cose, se rompe del todo o se hereda.',
+    ],
+  },
+  // Recorrido de cámara por las ruinas (sección sticky entre El mundo y la Temporada I).
+  // Cada paso es el texto de un tramo de la trayectoria; si añades o quitas pasos, revisa
+  // JOURNEY_KEYFRAMES en src/components/three/cameraPath.ts (un keyframe más que pasos).
+  journey: {
+    id: 'travesia',
+    eyebrow: 'La travesía',
+    title: 'Desciende hasta el altar',
+    intro: 'Sigue el camino de las brasas entre los arcos caídos, hasta el lugar donde el velo se rasgó.',
+    stepsLabel: 'Etapas de la travesía',
+    steps: [
+      {
+        id: 'arcos',
+        marker: 'I',
+        title: 'Los arcos caídos',
+        text: 'Lo que fue la puerta de la capital es hoy un umbral de piedra y ceniza. Aquí empieza cada expedición.',
+      },
+      {
+        id: 'altar',
+        marker: 'II',
+        title: 'El altar de cristal',
+        text: 'Los últimos fragmentos del velo aún laten en el centro de las ruinas. Quien los custodia, gobierna la región.',
+      },
+      {
+        id: 'grieta',
+        marker: 'III',
+        title: 'Sobre la grieta',
+        text: 'Desde lo alto se ve la herida entera. Cada gremio decide qué fragmento defender y cuál dejar arder.',
+      },
     ],
   },
   timeline: {

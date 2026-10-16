@@ -41,7 +41,8 @@ export function Timeline() {
   )
 
   return (
-    <Section ref={root} aria-labelledby="timeline-title">
+    // overflow-x-clip: los hitos entran desde la derecha (x: 32) y en móvil sobresaldrían del viewport.
+    <Section ref={root} aria-labelledby="timeline-title" className="overflow-x-clip">
       <SectionHeader id="timeline-title" eyebrow={timeline.eyebrow} title={timeline.title} />
       <ol
         data-timeline-list

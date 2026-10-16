@@ -3,7 +3,7 @@ import { site } from '../../config/site'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { Section } from '../layout/Section'
 import { Button } from '../ui/Button'
-import { Heading } from '../ui/Heading'
+import { RevealHeading } from '../ui/RevealHeading'
 
 export function FinalCta() {
   const { finalCta } = site
@@ -23,9 +23,7 @@ export function FinalCta() {
           className="pointer-events-none absolute inset-0 -z-10 bg-radial-[ellipse_70%_90%_at_50%_100%] from-ember-600/35 to-transparent"
         />
         <div className="mx-auto flex max-w-prose flex-col items-center gap-6">
-          <Heading level={2} id="final-cta-title" className="text-5xl sm:text-6xl lg:text-7xl">
-            {finalCta.title}
-          </Heading>
+          <RevealHeading id="final-cta-title" text={finalCta.title} className="text-5xl sm:text-6xl lg:text-7xl" />
           <p className="text-lg text-ink-muted text-pretty sm:text-xl">{finalCta.text}</p>
           <Button href={finalCta.cta.href} className="mt-2 px-10 py-4 text-base">
             {finalCta.cta.label}

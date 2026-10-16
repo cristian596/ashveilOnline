@@ -1,5 +1,5 @@
 import { Badge } from './Badge'
-import { Heading } from './Heading'
+import { RevealHeading } from './RevealHeading'
 
 interface SectionHeaderProps {
   id: string
@@ -14,9 +14,7 @@ export function SectionHeader({ id, eyebrow, title, intro, align = 'center' }: S
   return (
     <header className={`mb-12 flex flex-col gap-4 lg:mb-16 ${alignment}`}>
       <Badge>{eyebrow}</Badge>
-      <Heading level={2} id={id}>
-        {title}
-      </Heading>
+      <RevealHeading id={id} text={title} />
       {intro && <p className="max-w-prose text-lg text-ink-muted text-pretty">{intro}</p>}
     </header>
   )

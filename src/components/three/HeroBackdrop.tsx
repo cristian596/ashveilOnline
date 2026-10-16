@@ -1,4 +1,6 @@
 import { Suspense, lazy, useCallback, useState } from 'react'
+import { useAfterLoad } from '../../hooks/useAfterLoad'
+import { MOBILE, useMediaQuery } from '../../hooks/useMediaQuery'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import type { ScrollProgress } from './cameraPath'
 import { canRenderHeroScene } from './capabilities'
@@ -30,15 +32,24 @@ interface HeroBackdropProps {
   poster?: PosterVariant
 }
 
-/** Fondo 3D: el fallback siempre debajo y, si el dispositivo puede, la escena 3D encima con un fundido. */
+/**
+ * Fondo 3D: el póster siempre debajo y, si el dispositivo puede, la escena 3D encima con un fundido
+ * cuando pinta su primer frame. En móvil la escena se monta después del evento load.
+ */
 export function HeroBackdrop({ cameraPath, allowLive = true, poster = 'hero' }: HeroBackdropProps) {
   const reducedMotion = usePrefersReducedMotion()
-  const [capable] = useState(canRenderHeroScene)
+  const mobile = useMediaQuery(MOBILE)
+  // En móvil el póster es el LCP: el chunk de three, el GLB y el canvas esperan a que la página cargue.
+  // En escritorio no se espera nada.
+  const afterLoad = useAfterLoad(mobile)
+  const wantLive = allowLive && !reducedMotion && afterLoad
+  // canRenderHeroScene crea un contexto WebGL de prueba (cacheado): solo se consulta cuando hace falta.
+  const live = wantLive && canRenderHeroScene()
 
   return (
     <div aria-hidden="true" className="absolute inset-0">
       <HeroFallback variant={poster} />
-      {capable && !reducedMotion && allowLive && (
+      {live && (
         <SceneErrorBoundary>
           <Suspense fallback={null}>
             <LiveScene cameraPath={cameraPath} />

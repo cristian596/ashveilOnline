@@ -269,8 +269,14 @@ function CrystalLight({ animate }: { animate: boolean }) {
 }
 
 function ReadySignal({ onReady }: { onReady: () => void }) {
-  // Comparte Suspense con Ruins: el efecto solo corre cuando el modelo ya cargó.
-  useEffect(onReady, [onReady])
+  // Comparte Suspense con Ruins: solo se monta cuando el modelo ya cargó. Avisa en el primer frame,
+  // para que el fundido sobre el póster empiece con la escena ya pintada.
+  const signaled = useRef(false)
+  useFrame(() => {
+    if (signaled.current) return
+    signaled.current = true
+    onReady()
+  })
   return null
 }
 

@@ -36,7 +36,7 @@ Pasos: `npm run dev` (o `preview`), esperar ~9 s a que cargue el modelo y se asi
 
 ## Modelo
 
-`public/models/ashveil-hero.glb` se genera desde `ashveil-hero-original.glb` con `npm run optimize:model` (texturas a 2048 px, meshopt, sin `FB_ngon_encoding` ni `KHR_materials_volume`; ver `scripts/gltf-transform.config.mjs`). Si cambias el modelo, la cámara o la iluminación, vuelve a capturar los pósters.
+`public/models/ashveil-hero.glb` se genera desde `source-assets/ashveil-hero-original.glb` con `npm run optimize:model` (texturas a 2048 px, meshopt, sin `FB_ngon_encoding` ni `KHR_materials_volume`; ver `scripts/gltf-transform.config.mjs`). Si cambias el modelo, la cámara o la iluminación, vuelve a capturar los pósters.
 
 ## Deuda técnica: un canvas WebGL por sección
 

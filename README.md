@@ -8,7 +8,7 @@ React 19 + Vite + TypeScript + Tailwind CSS v4.
 - `npm run lint` — oxlint + `check:tokens`
 - `npm run check:tokens` — falla si `src/components/three/palette.ts` no coincide con los colores de `@theme`
 - `npm run preview` — previsualizar el build
-- `npm run optimize:model` — regenerar `public/models/ashveil-hero.glb` desde el modelo original
+- `npm run optimize:model` — regenerar `public/models/ashveil-hero.glb` desde `source-assets/ashveil-hero-original.glb`
 
 ## Personalizar para un cliente
 
@@ -67,25 +67,26 @@ Todos los tokens de diseño están en `@theme` de `src/index.css` (el único CSS
 
 ## Assets
 
-Todo en `public/`; se referencia por ruta absoluta (`/models/…`, `/images/…`).
+Todo en `public/` salvo el modelo original, que vive en `source-assets/` (fuera de `public/`, así no llega a `dist/`; está en el repositorio, no en `.gitignore`, porque pesa 11 MB). Lo publicado se referencia por ruta absoluta (`/models/…`, `/images/…`).
 
 | Asset | Ruta | Tamaño recomendado |
 | --- | --- | --- |
-| Modelo original | `public/models/ashveil-hero-original.glb` | Libre (el actual pesa ~11 MB); texturas hasta 4096 px |
+| Modelo original (fuente, **no se publica**) | `source-assets/ashveil-hero-original.glb` | Libre (el actual pesa ~11 MB); texturas hasta 4096 px |
 | Modelo optimizado (el que carga la web) | `public/models/ashveil-hero.glb` | Objetivo < 3 MB (el actual: ~2,6 MB) |
 | Póster horizontal | `public/images/ashveil-hero-poster-landscape.webp` | 1600×900 px (16:9), < 60 KB |
 | Póster vertical | `public/images/ashveil-hero-poster-portrait.webp` | 720×1464 px (≈1:2), < 60 KB |
 | Póster de la travesía, horizontal | `public/images/ashveil-journey-poster-landscape.webp` | 1600×900 px (16:9), < 60 KB |
 | Póster de la travesía, vertical | `public/images/ashveil-journey-poster-portrait.webp` | 720×1464 px (≈1:2), < 60 KB |
 | Favicon | `public/favicon.svg` (ruta en `meta.favicon`) | SVG, o PNG 32×32 / 180×180; ICO también vale |
-| Imagen social | ruta en `meta.ogImage` | 1200×630 px. Por defecto reutiliza el póster horizontal; crea una propia para mejor resultado |
+| Imagen social | `public/images/ashveil-og.jpg` (ruta en `meta.ogImage`) | 1200×630 px. La actual es un recorte centrado del póster horizontal del hero; sustitúyela por una propia del cliente |
+| robots.txt | `public/robots.txt` | Permite todo. Si rellenas `meta.url`, añade `Sitemap: <url>/sitemap.xml` cuando tengas sitemap |
 
 ### Cambiar el modelo
-1. Sustituye `ashveil-hero-original.glb` y ejecuta `npm run optimize:model` (texturas a 2048 px, meshopt).
+1. Sustituye `source-assets/ashveil-hero-original.glb` y ejecuta `npm run optimize:model` (texturas a 2048 px, meshopt).
 2. Si el modelo es otro, revisa en `src/components/three/` la posición del altar y los keyframes (`cameraPath.ts`), el encuadre y la iluminación (`HeroScene.tsx`); la escena está compuesta para el modelo actual.
 
 ### Regenerar los pósteres
-Los pósteres se usan sin WebGL, con reduced motion, en gama baja, en móvil/táctil (la travesía) y mientras carga el modelo. Tienen que coincidir con la cámara real, o el paso a la escena 3D se nota como un salto. Hay cuatro: hero y travesía, cada uno horizontal y vertical.
+Los pósteres se usan sin WebGL, con reduced motion, en gama baja, en móvil/táctil (la travesía) y mientras carga el modelo. En móvil el póster del hero es el LCP: la escena 3D se monta después del evento `load` (`useAfterLoad`) y se funde sobre él al pintar su primer frame; en escritorio se monta de inmediato. Tienen que coincidir con la cámara real, o el paso a la escena 3D se nota como un salto. Hay cuatro: hero y travesía, cada uno horizontal y vertical.
 
 El procedimiento exacto (viewports, qué ocultar, tamaños) está en [src/components/three/README.md](src/components/three/README.md#pósteres). Resumen: `npm run dev`, esperar a que cargue el modelo, ocultar todo salvo el `<canvas>`, capturarlo y exportar a WebP con los tamaños de la tabla, manteniendo el nombre. Si cambias el modelo o la cámara del hero, regenera los del hero; si cambias el keyframe 0 de `cameraPath.ts` o el modelo, regenera los de la travesía.
 
@@ -124,7 +125,4 @@ Qué se comprobó, y con qué, en la última revisión (Chrome 155 estable en Wi
 ## Deuda técnica conocida
 
 - **Un canvas WebGL por sección** (hero y travesía): ver [src/components/three/README.md](src/components/three/README.md#deuda-técnica-un-canvas-webgl-por-sección).
-- **Rendimiento en móvil**: Lighthouse móvil (Slow 4G, CPU ×4) da LCP ≈ 4,8–5,3 s y TBT ≈ 1–1,7 s. El chunk de three/R3F (`HeroScene`, ~990 kB, 265 kB gzip) y el GLB (2,6 MB) se piden en el hero también en móvil.
-- `public/models/ashveil-hero-original.glb` (11 MB) se copia a `dist/`; sácalo de `public/` o exclúyelo del despliegue.
-- No hay `robots.txt` (Lighthouse SEO lo marca como no válido); añádelo al desplegar.
-- `og:image` reutiliza el póster horizontal del hero (1600×900, no 1200×630).
+- **Rendimiento en móvil**: el póster es el LCP y three/R3F (`HeroScene`, ~990 kB, 265 kB gzip) y el GLB (2,6 MB) se piden tras `load`. Aun así el TBT sigue alto (≈ 3 s en Lighthouse móvil con WebGL por software) porque parsear y ejecutar three compite con el hilo principal justo después del load; medirlo en un dispositivo con GPU real.

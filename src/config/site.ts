@@ -131,7 +131,7 @@ export const site = {
     lang: 'es',
     locale: 'es_ES',
     themeColor: '#0a090b',
-    ogImage: '/images/ashveil-hero-poster-landscape.webp',
+    ogImage: '/images/ashveil-og.jpg',
     url: '',
     favicon: '/favicon.svg',
   },

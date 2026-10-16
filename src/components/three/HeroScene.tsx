@@ -5,6 +5,7 @@ import {
   AdditiveBlending,
   CanvasTexture,
   Color,
+  MathUtils,
   PerspectiveCamera,
   Vector3,
   type PointLight,
@@ -35,6 +36,21 @@ const FRAMING = {
   landscape: { fov: 42, lookAt: new Vector3(ALTAR.x, ALTAR.y - 0.13, ALTAR.z) },
   portrait: { fov: 52, lookAt: new Vector3(ALTAR.x, ALTAR.y - 0.24, ALTAR.z) },
 }
+/**
+ * En pantallas anchas (≥ 1,6:1, como 1440×900 o 16:9) el altar quedaba pequeño dentro del encuadre:
+ * se cierra el FOV de 42° a 34° (≈ 1,25× de zoom) sin mover la cámara, para que la niebla no cambie.
+ * Entre 1,2:1 y 1,6:1 se interpola, para que al redimensionar no haya saltos. En vertical no cambia.
+ */
+const WIDE_FOV = 34
+const WIDE_ASPECT = { from: 1.2, to: 1.6 }
+
+function landscapeFov(aspect: number) {
+  return MathUtils.lerp(
+    FRAMING.landscape.fov,
+    WIDE_FOV,
+    MathUtils.smoothstep(aspect, WIDE_ASPECT.from, WIDE_ASPECT.to),
+  )
+}
 /** Desplazamiento máximo de la cámara con el parallax del mouse, en unidades del modelo. */
 const PARALLAX = { x: 0.06, y: 0.03 }
 
@@ -47,7 +63,9 @@ const EMBER_CEILING = 0.85
 
 function CameraRig({ parallax }: { parallax: boolean }) {
   const portrait = useThree((state) => state.size.width < state.size.height)
+  const aspect = useThree((state) => state.size.width / state.size.height)
   const framing = portrait ? FRAMING.portrait : FRAMING.landscape
+  const fov = portrait ? FRAMING.portrait.fov : landscapeFov(aspect)
   const pointer = useRef({ x: 0, y: 0 })
   const target = useMemo(() => new Vector3(), [])
 
@@ -65,8 +83,8 @@ function CameraRig({ parallax }: { parallax: boolean }) {
   }, [parallax])
 
   useFrame(({ camera }, delta) => {
-    if (camera instanceof PerspectiveCamera && camera.fov !== framing.fov) {
-      camera.fov = framing.fov
+    if (camera instanceof PerspectiveCamera && camera.fov !== fov) {
+      camera.fov = fov
       camera.updateProjectionMatrix()
     }
     target.set(

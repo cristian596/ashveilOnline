@@ -15,7 +15,7 @@
   /* ── Colores: texto ── */
   --color-ink: #efe8dc;
   --color-ink-muted: #a39a90;
-  --color-ink-subtle: #7a7269;
+  --color-ink-subtle: #8f877d; /* = ash-400. Antes #7a7269 (3,65:1 sobre surface); ahora ≥ 4,5:1 sobre canvas, surface y surface-raised */
 
   /* ── Colores: acento ámbar/brasa ── */
   --color-ember-300: #ffc98a;

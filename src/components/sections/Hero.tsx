@@ -29,7 +29,7 @@ export function Hero() {
 
       {/* Capa 3: contenido */}
       <Container className="flex flex-col items-center gap-6 text-center">
-        <Badge tone="crystal">{hero.badge}</Badge>
+        <Badge tone="crystal" solid>{hero.badge}</Badge>
         <Heading level={1} id="hero-title" className="drop-shadow-[0_2px_24px_var(--color-canvas)]">
           {name}
         </Heading>

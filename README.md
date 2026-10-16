@@ -21,7 +21,7 @@ Todo se hace en archivos de configuración y assets; no hace falta tocar compone
 - [ ] **Colores** — variables `--color-*` en `@theme` de `src/index.css` y, para la escena 3D, el mismo valor en `src/components/three/palette.ts`. Ver [Nueva marca](#nueva-marca).
 - [ ] **Fuentes** — `--font-display` y `--font-sans` en `@theme`, y el `<link>` de Google Fonts en `index.html`.
 - [ ] **Modelo 3D** — ver [Assets](#assets).
-- [ ] **Pósteres del hero** — ver [Assets](#assets).
+- [ ] **Pósteres del hero y de la travesía** — ver [Assets](#assets).
 - [ ] **Enlaces** — `nav.cta`, `hero.primaryCta`, `hero.secondaryCta`, `finalCta.cta` y `footer.links` en `site.ts`. Sustituye los `#anclas` de ejemplo (`#jugar`, `#registro`, `#trailer`, `#terminos`…) por las URL reales.
 - [ ] **Datos de ejemplo** — cifras y testimonios de `community` están marcados como ejemplo (`isExample`); cámbialos por datos reales.
 - [ ] **Verificar** — `npm run lint` y `npm run build`.
@@ -38,7 +38,7 @@ Todo se hace en archivos de configuración y assets; no hace falta tocar compone
 
 ### Placeholders del lazy loading y saltos de layout
 
-Mientras llega el chunk de cada sección se reserva espacio con un placeholder cuya altura mínima (`min-h-*`) se define por sección en `registry.ts`, con la escala de espaciado de Tailwind (y `svh` para «La travesía»), por ejemplo `min-h-288 sm:min-h-192 lg:min-h-184`. No dependen del texto concreto: es un suelo orientativo, así que al cambiar el contenido de una sección no hace falta remedirla. Esto limita los saltos de layout (y los desajustes de ScrollTrigger) al sustituir el placeholder por la sección real. Si el contenido de una sección queda muy lejos de ese suelo, ajusta su clase en `registry.ts`.
+Mientras llega el chunk de cada sección se reserva espacio con un placeholder cuya altura mínima (`min-h-*`) se define por sección en `registry.ts`, con la escala de espaciado de Tailwind (y `svh` para «La travesía»), por ejemplo `min-h-288 sm:min-h-192 lg:min-h-184`. No dependen del texto concreto: es un suelo orientativo, así que al cambiar el contenido de una sección no hace falta remedirla. Esto limita los saltos de layout (y los desajustes de ScrollTrigger) al sustituir el placeholder por la sección real. Si el contenido de una sección queda muy lejos de ese suelo, ajusta su clase en `registry.ts`. Medido con el contenido actual en 390, 768 y 1440 px, todas las secciones están dentro de ±4 % de lo reservado (la travesía coincide exacta: 400 svh).
 
 ## Nueva marca
 
@@ -55,7 +55,7 @@ Todos los tokens de diseño están en `@theme` de `src/index.css` (el único CSS
 | Sombras de acento | `--shadow-card`, `--shadow-ember`, `--shadow-crystal` (llevan el color de ember/crystal en `rgb()`; actualízalos si cambias esas escalas) |
 | Nombre | `name` en `site.ts` (navbar, footer, `og:site_name`) |
 
-**Los colores viven en dos sitios.** three.js necesita valores, no clases, así que `src/components/three/palette.ts` repite seis tokens. La clave `ember300` equivale a `--color-ember-300`. `npm run check:tokens` (incluido en `npm run lint`) falla si alguno difiere, si falta el token o si `meta.themeColor` no coincide con `--color-canvas`. El script solo comprueba los colores que ya están en `palette.ts`; si añades uno nuevo, sigue la misma convención de nombres.
+**Los colores viven en dos sitios.** three.js necesita valores, no clases, así que `src/components/three/palette.ts` repite seis tokens. La clave `ember300` equivale a `--color-ember-300`. `npm run check:tokens` (incluido en `npm run lint`) falla si alguno difiere, si falta el token o si `meta.themeColor` no coincide con `--color-canvas`. También exige contraste WCAG AA (4,5:1) de `ink`, `ink-muted`, `ink-subtle`, `ember-300` y `crystal-300` sobre `canvas`, `surface` y `surface-raised`. (`ink-subtle` pasó de `#7a7269` a `#8f877d`, el mismo valor que `ash-400`, porque daba 3,65:1 en el pie.) El script solo comprueba los colores que ya están en `palette.ts`; si añades uno nuevo, sigue la misma convención de nombres.
 
 ## Metadatos y SEO
 
@@ -75,6 +75,8 @@ Todo en `public/`; se referencia por ruta absoluta (`/models/…`, `/images/…`
 | Modelo optimizado (el que carga la web) | `public/models/ashveil-hero.glb` | Objetivo < 3 MB (el actual: ~2,6 MB) |
 | Póster horizontal | `public/images/ashveil-hero-poster-landscape.webp` | 1600×900 px (16:9), < 60 KB |
 | Póster vertical | `public/images/ashveil-hero-poster-portrait.webp` | 720×1464 px (≈1:2), < 60 KB |
+| Póster de la travesía, horizontal | `public/images/ashveil-journey-poster-landscape.webp` | 1600×900 px (16:9), < 60 KB |
+| Póster de la travesía, vertical | `public/images/ashveil-journey-poster-portrait.webp` | 720×1464 px (≈1:2), < 60 KB |
 | Favicon | `public/favicon.svg` (ruta en `meta.favicon`) | SVG, o PNG 32×32 / 180×180; ICO también vale |
 | Imagen social | ruta en `meta.ogImage` | 1200×630 px. Por defecto reutiliza el póster horizontal; crea una propia para mejor resultado |
 
@@ -83,13 +85,9 @@ Todo en `public/`; se referencia por ruta absoluta (`/models/…`, `/images/…`
 2. Si el modelo es otro, revisa en `src/components/three/` la posición del altar y los keyframes (`cameraPath.ts`), el encuadre y la iluminación (`HeroScene.tsx`); la escena está compuesta para el modelo actual.
 
 ### Regenerar los pósteres
-Los pósteres se usan sin WebGL, con reduced motion, en gama baja y mientras carga el modelo. Tienen que coincidir con la cámara real, o el paso a la escena 3D se nota como un salto.
+Los pósteres se usan sin WebGL, con reduced motion, en gama baja, en móvil/táctil (la travesía) y mientras carga el modelo. Tienen que coincidir con la cámara real, o el paso a la escena 3D se nota como un salto. Hay cuatro: hero y travesía, cada uno horizontal y vertical.
 
-1. Arranca `npm run dev` y abre la página con un viewport **16:9** (por ejemplo 1600×900) para el horizontal y con uno **vertical** (≈ 720×1464) para el vertical. Son los dos encuadres de `FRAMING` en `HeroScene.tsx` (el vertical usa otro `fov`).
-2. Espera a que cargue el modelo y captura el hero sin navbar ni textos (oculta el contenido con las herramientas del navegador), con la cámara en su posición de reposo.
-3. Exporta a WebP con los tamaños de la tabla y sustituye los dos archivos manteniendo el nombre.
-
-«La travesía» no tiene pósteres propios: reutiliza los del hero, así que al cambiar el modelo o la cámara basta con regenerar esos dos.
+El procedimiento exacto (viewports, qué ocultar, tamaños) está en [src/components/three/README.md](src/components/three/README.md#pósteres). Resumen: `npm run dev`, esperar a que cargue el modelo, ocultar todo salvo el `<canvas>`, capturarlo y exportar a WebP con los tamaños de la tabla, manteniendo el nombre. Si cambias el modelo o la cámara del hero, regenera los del hero; si cambias el keyframe 0 de `cameraPath.ts` o el modelo, regenera los de la travesía.
 
 ## Estructura de configuración
 - `src/config/site.ts` — contenido, metadatos y secciones activas (tipo `SiteConfig`).
@@ -101,3 +99,32 @@ Los pósteres se usan sin WebGL, con reduced motion, en gama baja y mientras car
 ## Notas de diseño
 - **Movimiento**: respeta `prefers-reduced-motion` con las variantes `motion-safe:` / `motion-reduce:` y el hook `usePrefersReducedMotion`.
 - **Efectos**: halo del cursor (`components/effects/CustomCursor.tsx`, `data-cursor="crystal"` lo vuelve azul), grano de película (`FilmGrain.tsx`), titulares revelados (`ui/RevealHeading.tsx`), tarjetas con inclinación (`ui/TiltCard.tsx`) y sonido ambiente generado con Web Audio (`lib/ambientAudio.ts`, apagado por defecto). Todos se desactivan con reduced motion salvo el grano, que es estático, y el audio, que solo suena si se activa.
+
+## Verificación y límites
+
+Qué se comprobó, y con qué, en la última revisión (Chrome 155 estable en Windows, emulación con Playwright):
+
+- **Alturas de placeholder** en 390, 768 y 1440 px: ±4 % respecto de `registry.ts`.
+- **Contraste**: muestreo de los píxeles reales detrás de cada texto (incluye el canvas 3D, los pósteres y los degradados) en 1440, 1024, 820 y 390 px; sin fallos AA. No cubre los estados `:hover`.
+- **axe-core** (WCAG 2 A/AA, 2.1, 2.2 AA y buenas prácticas): 0 violaciones en escritorio y móvil, con y sin reduced motion y con puntero táctil. Las comprobaciones de contraste sobre canvas o imagen las marca como «incompletas»; se cubren con el punto anterior.
+- **Reduced motion** (emulado con `prefers-reduced-motion` desde el navegador): sin canvas, sin halo del cursor, sin tilt, sin animaciones en curso y todo el contenido visible.
+- **Táctil** (`hasTouch` y `pointer: coarse` emulados): sin halo ni tilt; la travesía usa el póster.
+- **Teclado**: recorrido con Tab de todos los elementos interactivos; todos con `:focus-visible` y anillo visible (incluidos FAQ y tabs).
+- **Rendimiento**: Lighthouse sobre `npm run build` + `npm run preview`, 3 pasadas por factor de forma, con el throttling simulado de Lighthouse.
+
+**No se ha probado**:
+- **Safari** (macOS e iOS) ni **Firefox**: `backdrop-filter`, `svh`, `inert`, `color-mix`, `bg-radial`, WebGL y `position: sticky` con Lenis podrían comportarse distinto.
+- **Dispositivos táctiles reales**: solo emulación; el rendimiento 3D en móvil, el scroll inercial y el teclado virtual no están verificados.
+- **Reduced motion desde el sistema operativo**: solo se emuló desde el navegador.
+- **Lectores de pantalla reales** (NVDA, JAWS, VoiceOver, TalkBack): axe no sustituye una prueba con voz; los tabs, el FAQ y el botón `aria-pressed` siguen WAI-ARIA, pero no se escucharon.
+- **GPU real**: el WebGL se renderizó por software (SwiftShader); los FPS y tiempos del 3D no son representativos.
+- **LCP y CLS** son medición local con emulación, no datos de campo.
+- `meta.url` está vacío: no se comprobó Open Graph con una URL pública ni con los validadores de las redes sociales.
+
+## Deuda técnica conocida
+
+- **Un canvas WebGL por sección** (hero y travesía): ver [src/components/three/README.md](src/components/three/README.md#deuda-técnica-un-canvas-webgl-por-sección).
+- **Rendimiento en móvil**: Lighthouse móvil (Slow 4G, CPU ×4) da LCP ≈ 4,8–5,3 s y TBT ≈ 1–1,7 s. El chunk de three/R3F (`HeroScene`, ~990 kB, 265 kB gzip) y el GLB (2,6 MB) se piden en el hero también en móvil.
+- `public/models/ashveil-hero-original.glb` (11 MB) se copia a `dist/`; sácalo de `public/` o exclúyelo del despliegue.
+- No hay `robots.txt` (Lighthouse SEO lo marca como no válido); añádelo al desplegar.
+- `og:image` reutiliza el póster horizontal del hero (1600×900, no 1200×630).

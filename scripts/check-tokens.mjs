@@ -43,6 +43,28 @@ for (const [, key, value] of entries) {
   }
 }
 
+// Contraste WCAG AA (4,5:1) de los textos de la marca sobre los fondos donde se usan.
+const luminance = (hex) => {
+  const n = parseInt(hex.slice(1, 7), 16)
+  const lin = (v) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)
+  return 0.2126 * lin(n >> 16) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255)
+}
+const ratio = (a, b) => {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x)
+  return (hi + 0.05) / (lo + 0.05)
+}
+const TEXT_ON_SURFACES = ['ink', 'ink-muted', 'ink-subtle', 'ember-300', 'crystal-300']
+const SURFACES = ['canvas', 'surface', 'surface-raised']
+for (const text of TEXT_ON_SURFACES) {
+  for (const surface of SURFACES) {
+    const fg = themeColors.get(text)
+    const bg = themeColors.get(surface)
+    if (fg === undefined || bg === undefined) continue
+    const value = ratio(fg, bg)
+    if (value < 4.5) errors.push(`Contraste insuficiente: --color-${text} sobre --color-${surface} es ${value.toFixed(2)}:1 (mínimo 4,5:1).`)
+  }
+}
+
 if (errors.length > 0) {
   console.error(`Los tokens de color no coinciden:\n- ${errors.join('\n- ')}`)
   process.exit(1)

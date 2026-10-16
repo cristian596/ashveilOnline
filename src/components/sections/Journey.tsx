@@ -64,7 +64,7 @@ export function Journey() {
     >
       {/* Escenario: fijado mientras se recorre la sección. Sin overflow-hidden en la section, o sticky deja de funcionar. */}
       <div className="sticky top-0 h-svh overflow-hidden">
-        <HeroBackdrop cameraPath={progress} allowLive={live && near} />
+        <HeroBackdrop cameraPath={progress} allowLive={live && near} poster="journey" />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 bg-radial-[ellipse_80%_75%_at_50%_45%] from-transparent from-45% to-canvas"
@@ -75,15 +75,20 @@ export function Journey() {
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-linear-to-t from-canvas to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-canvas via-canvas/85 to-transparent"
         />
       </div>
 
       {/* Textos: suben sobre el escenario (margen negativo de una pantalla) y marcan cada tramo. */}
       <Container className="relative mt-[-100svh]">
-        {/* El degradado oscurece la escena justo detrás del titular para que se lea sobre la escalinata. */}
-        <header className="flex min-h-svh flex-col items-center justify-center gap-4 bg-radial-[ellipse_50%_28%_at_50%_52%] from-canvas/75 to-transparent text-center">
-          <Badge>{journey.eyebrow}</Badge>
+        {/* Móvil/tablet: texto centrado con un degradado radial detrás. En escritorio (lg) el bloque pasa
+            a la izquierda, fuera del altar, sobre un degradado que cubre ese lado a todo el ancho de la pantalla. */}
+        <header className="relative isolate flex min-h-svh flex-col items-center justify-center gap-4 bg-radial-[ellipse_85%_38%_at_50%_52%] from-canvas/92 from-30% to-transparent text-center lg:items-start lg:bg-none lg:pr-[56%] lg:text-left">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 hidden w-screen -translate-x-1/2 bg-radial-[ellipse_48%_46%_at_24%_52%] from-canvas/90 from-35% to-transparent lg:block"
+          />
+          <Badge solid>{journey.eyebrow}</Badge>
           <RevealHeading
             id="journey-title"
             text={journey.title}
@@ -102,7 +107,7 @@ export function Journey() {
             >
               <article
                 data-journey-step
-                className="flex max-w-md flex-col gap-3 rounded-lg border border-line bg-canvas/80 p-8 shadow-card"
+                className="flex max-w-md flex-col gap-3 rounded-lg border border-line bg-canvas/90 p-8 shadow-card"
               >
                 <p aria-hidden="true" className="font-display text-2xl font-bold text-crystal-300">
                   {step.marker}

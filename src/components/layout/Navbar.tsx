@@ -5,7 +5,9 @@ import { AmbientToggle } from './AmbientToggle'
 import { Container } from './Container'
 
 export function Navbar() {
-  const { nav, name } = site
+  const { nav, name, sections } = site
+  // Solo se enlazan las secciones activas; el href sale del id de cada sección.
+  const links = nav.links.filter((link) => sections[link.section])
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-canvas/80 backdrop-blur-md">
       <Container className="flex h-16 items-center justify-between gap-4 sm:gap-6">
@@ -18,10 +20,10 @@ export function Navbar() {
         </a>
         <nav aria-label={nav.ariaLabel} className="hidden md:block">
           <ul className="flex items-center gap-8">
-            {nav.links.map((link) => (
-              <li key={link.href}>
+            {links.map((link) => (
+              <li key={link.section}>
                 <a
-                  href={link.href}
+                  href={`#${site[link.section].id}`}
                   className={`text-sm font-medium text-ink-muted transition-colors duration-(--duration-fast) hover:text-ember-300 motion-reduce:transition-none ${focusRing}`}
                 >
                   {link.label}

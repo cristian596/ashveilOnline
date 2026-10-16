@@ -7,7 +7,7 @@ Escena 3D (React Three Fiber + drei). La usan el hero y la sección «La traves�
 - `cameraPath.ts`: posición del altar y keyframes de la trayectoria de «La travesía» (un keyframe por paso de `site.journey.steps` más la cabecera).
 - `HeroFallback.tsx`: póster estático (`public/images/ashveil-hero-poster-*.webp`) sobre un degradado radial. Se usa sin WebGL, con reduced motion, en gama baja y mientras carga el modelo.
 - `capabilities.ts`: detección de WebGL y gama baja (núcleos, memoria, ahorro de datos).
-- `palette.ts`: copia de los tokens de color de `src/index.css` para three.js.
+- `palette.ts`: copia de los tokens de color de `src/index.css` para three.js (`npm run check:tokens` comprueba que coincidan).
 
 ## Modelo
 

@@ -295,7 +295,7 @@ export default function HeroScene({ onReady, cameraPath }: HeroSceneProps) {
         {/* La niebla funde con el fondo los bordes y la base cortada del escenario. */}
         <fog attach="fog" args={[scenePalette.canvas, 1.1, 2.3]} />
 
-        <ambientLight color={scenePalette.ash} intensity={0.2} />
+        <ambientLight color={scenePalette.ash300} intensity={0.2} />
         {/* Brasa: luz cálida desde arriba a la izquierda, rasante sobre los arcos. */}
         <directionalLight position={[-1.2, 1.4, 0.9]} color={scenePalette.ember400} intensity={2.6} />
         <CrystalLight animate={!reducedMotion} />

@@ -49,11 +49,11 @@ export function Timeline() {
         aria-label={timeline.listLabel}
         className="relative mx-auto flex max-w-prose flex-col gap-12 pl-10"
       >
-        <span aria-hidden="true" className="absolute top-2 bottom-2 left-[0.4375rem] w-0.5 bg-line" />
+        <span aria-hidden="true" className="absolute top-2 bottom-2 left-1.75 w-0.5 bg-line" />
         <span
           aria-hidden="true"
           data-timeline-line
-          className="absolute top-2 bottom-2 left-[0.4375rem] w-0.5 origin-top bg-linear-to-b from-ember-400 to-ember-600"
+          className="absolute top-2 bottom-2 left-1.75 w-0.5 origin-top bg-linear-to-b from-ember-400 to-ember-600"
         />
         {timeline.items.map((item) => (
           <li key={item.id} data-timeline-item className="relative">

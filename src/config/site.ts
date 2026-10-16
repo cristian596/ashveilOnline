@@ -1,4 +1,5 @@
-﻿export interface NavLink {
+﻿/** Enlace de texto fijo (footer). */
+export interface NavLink {
   label: string
   href: string
 }
@@ -8,20 +9,152 @@ export interface Cta {
   href: string
 }
 
+/** Secciones que se pueden activar o desactivar desde `site.sections`. El hero siempre está. */
+export type SectionKey =
+  | 'pillars'
+  | 'classes'
+  | 'lore'
+  | 'journey'
+  | 'timeline'
+  | 'community'
+  | 'faq'
+  | 'finalCta'
+
+export type SectionToggles = Record<SectionKey, boolean>
+
+/** Secciones con `id` propio: son las únicas a las que puede apuntar un enlace de la navbar. */
+export type AnchorSectionKey = 'classes' | 'lore' | 'journey' | 'community' | 'finalCta'
+
+/** Enlace de la navbar: apunta a una sección y desaparece si esa sección está desactivada. */
+export interface SectionNavLink {
+  label: string
+  section: AnchorSectionKey
+}
+
+export interface SiteMeta {
+  /** <title> y og:title. */
+  title: string
+  /** meta description y og:description. */
+  description: string
+  /** Atributo lang de <html>. */
+  lang: string
+  /** og:locale (por ejemplo es_ES, en_US). */
+  locale: string
+  /** Color de la barra del navegador en móvil. Debe coincidir con --color-canvas. */
+  themeColor: string
+  /** Ruta en public/ de la imagen para redes sociales (recomendado 1200×630). */
+  ogImage: string
+  /** URL pública del sitio, sin barra final. Vacía = og:url se omite y og:image queda relativa. */
+  url: string
+  /** Ruta en public/ del favicon (svg, png o ico). */
+  favicon: string
+}
+
+interface SectionHead {
+  eyebrow: string
+  title: string
+}
+
+export interface SiteConfig {
+  name: string
+  tagline: string
+  meta: SiteMeta
+  sections: SectionToggles
+  nav: {
+    ariaLabel: string
+    brandAriaLabel: string
+    links: readonly SectionNavLink[]
+    cta: Cta
+    ambient: { label: string; shortLabel: string }
+  }
+  hero: { badge: string; primaryCta: Cta; secondaryCta: Cta }
+  pillars: SectionHead & {
+    items: readonly { id: string; title: string; description: string }[]
+  }
+  classes: SectionHead & {
+    id: string
+    intro: string
+    tablistLabel: string
+    roleLabel: string
+    items: readonly { id: string; name: string; role: string; phrase: string }[]
+  }
+  lore: SectionHead & { id: string; paragraphs: readonly string[] }
+  journey: SectionHead & {
+    id: string
+    intro: string
+    stepsLabel: string
+    steps: readonly { id: string; marker: string; title: string; text: string }[]
+  }
+  timeline: SectionHead & {
+    listLabel: string
+    items: readonly { id: string; date: string; title: string; description: string }[]
+  }
+  community: SectionHead & {
+    id: string
+    intro: string
+    statsLabel: string
+    stats: readonly { id: string; value: number; label: string }[]
+    testimonialsLabel: string
+    exampleBadge: string
+    exampleNote: string
+    testimonials: readonly {
+      id: string
+      quote: string
+      author: string
+      role: string
+      isExample: boolean
+    }[]
+  }
+  faq: SectionHead & {
+    items: readonly { id: string; question: string; answer: string }[]
+  }
+  finalCta: { id: string; title: string; text: string; cta: Cta }
+  footer: {
+    ariaLabel: string
+    year: number
+    legal: string
+    links: readonly NavLink[]
+  }
+}
+
+/**
+ * Única fuente del contenido del sitio. Personalizar la plantilla = editar este objeto.
+ * `satisfies SiteConfig` hace que TypeScript avise si falta un campo o sobra uno.
+ */
 export const site = {
   name: 'Ashveil Online',
   tagline: 'Donde las brasas recuerdan lo que el velo olvidó.',
-  description:
-    'Un MMORPG de fantasía oscura. Reúne a tu gremio, cruza el velo y reclama las cenizas de un mundo que se niega a morir.',
+  meta: {
+    title: 'Ashveil Online — MMORPG de fantasía oscura',
+    description:
+      'Ashveil Online es un MMORPG de fantasía oscura: un mundo en ruinas, brasas que aún arden y un velo a punto de romperse. Prepárate para entrar.',
+    lang: 'es',
+    locale: 'es_ES',
+    themeColor: '#0a090b',
+    ogImage: '/images/ashveil-hero-poster-landscape.webp',
+    url: '',
+    favicon: '/favicon.svg',
+  },
+  // false = la sección no se monta, no descarga su chunk y desaparece de la navbar.
+  sections: {
+    pillars: true,
+    classes: true,
+    lore: true,
+    journey: true,
+    timeline: true,
+    community: true,
+    faq: true,
+    finalCta: true,
+  },
   nav: {
     ariaLabel: 'Navegación principal',
     brandAriaLabel: 'Ashveil Online, ir al inicio',
     links: [
-      { label: 'El Mundo', href: '#mundo' },
-      { label: 'Clases', href: '#clases' },
-      { label: 'Comunidad', href: '#comunidad' },
-    ] satisfies NavLink[],
-    cta: { label: 'Jugar ahora', href: '#jugar' } satisfies Cta,
+      { label: 'El Mundo', section: 'lore' },
+      { label: 'Clases', section: 'classes' },
+      { label: 'Comunidad', section: 'community' },
+    ],
+    cta: { label: 'Jugar ahora', href: '#jugar' },
     // Botón de sonido ambiente (apagado por defecto). El estado lo anuncia aria-pressed.
     ambient: {
       label: 'Sonido ambiente',
@@ -30,8 +163,8 @@ export const site = {
   },
   hero: {
     badge: 'Acceso anticipado próximamente',
-    primaryCta: { label: 'Comenzar el viaje', href: '#jugar' } satisfies Cta,
-    secondaryCta: { label: 'Ver el tráiler', href: '#trailer' } satisfies Cta,
+    primaryCta: { label: 'Comenzar el viaje', href: '#jugar' },
+    secondaryCta: { label: 'Ver el tráiler', href: '#trailer' },
   },
   pillars: {
     eyebrow: 'Por qué Ashveil',
@@ -249,7 +382,7 @@ export const site = {
     id: 'jugar',
     title: 'El velo no esperará',
     text: 'Reserva tu nombre, elige tu juramento y llega antes de que las brasas lo cubran todo.',
-    cta: { label: 'Reservar mi lugar', href: '#registro' } satisfies Cta,
+    cta: { label: 'Reservar mi lugar', href: '#registro' },
   },
   footer: {
     ariaLabel: 'Pie de página',
@@ -259,7 +392,7 @@ export const site = {
       { label: 'Términos', href: '#terminos' },
       { label: 'Privacidad', href: '#privacidad' },
       { label: 'Soporte', href: '#soporte' },
-    ] satisfies NavLink[],
+    ],
   },
-} as const
+} as const satisfies SiteConfig
 

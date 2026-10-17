@@ -3,7 +3,8 @@ import { useRef, useState, type KeyboardEvent } from 'react'
 import { site } from '../../config/site'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
-import { Section } from '../layout/Section'
+import { ClassEmblem } from '../icons/ClassEmblems'
+import { Section }from '../layout/Section'
 import { Heading } from '../ui/Heading'
 import { SectionHeader } from '../ui/SectionHeader'
 import { focusRing } from '../ui/styles'
@@ -20,7 +21,7 @@ export function Classes() {
 
   const active = classes.items.find((item) => item.id === activeId) ?? classes.items[0]
 
-  const select = (id: string) => {
+  const select =(id: string) => {
     setActiveId(id)
     tabRefs.current[id]?.focus()
   }
@@ -112,6 +113,13 @@ export function Classes() {
             transition={{ duration: reduced ? 0 : 0.2 }}
             className="flex flex-col items-center gap-4 lg:items-start"
           >
+            <motion.div
+              initial={reduced ? false : { opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: reduced ? 0 : 0.3 }}
+            >
+              <ClassEmblem id={active.id} className="size-12 text-ember-300 opacity-80 lg:size-16" />
+            </motion.div>
             <p className="text-xs font-semibold tracking-widest text-crystal-300 uppercase">
               {classes.roleLabel}: {active.role}
             </p>

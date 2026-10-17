@@ -26,13 +26,13 @@ export const sectionRegistry: readonly SectionEntry[] = [
     key: 'classes',
     Component: lazy(() => import('./Classes').then((m) => ({ default: m.Classes }))),
     id: site.classes.id,
-    placeholder: 'min-h-208 sm:min-h-180 lg:min-h-208',
+    placeholder: 'min-h-208 sm:min-h-180 lg:min-h-194',
   },
   {
     key: 'lore',
     Component: lazy(() => import('./Lore').then((m) => ({ default: m.Lore }))),
     id: site.lore.id,
-    placeholder: 'min-h-264 sm:min-h-208 lg:min-h-240',
+    placeholder: 'min-h-264 sm:min-h-208 lg:min-h-170',
   },
   {
     key: 'journey',
@@ -43,7 +43,7 @@ export const sectionRegistry: readonly SectionEntry[] = [
   {
     key: 'timeline',
     Component: lazy(() => import('./Timeline').then((m) => ({ default: m.Timeline }))),
-    placeholder: 'min-h-224 sm:min-h-208 lg:min-h-240',
+    placeholder: 'min-h-224 sm:min-h-208 lg:min-h-209',
   },
   {
     key: 'community',
@@ -54,12 +54,12 @@ export const sectionRegistry: readonly SectionEntry[] = [
   {
     key: 'faq',
     Component: lazy(() => import('./Faq').then((m) => ({ default: m.Faq }))),
-    placeholder: 'min-h-200 sm:min-h-200 lg:min-h-232',
+    placeholder: 'min-h-200 sm:min-h-200 lg:min-h-190',
   },
   {
     key: 'finalCta',
     Component: lazy(() => import('./FinalCta').then((m) => ({ default: m.FinalCta }))),
     id: site.finalCta.id,
-    placeholder: 'min-h-160 sm:min-h-144 lg:min-h-188',
+    placeholder: 'min-h-160 sm:min-h-144 lg:min-h-166',
   },
 ]

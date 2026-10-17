@@ -43,8 +43,10 @@ export function Faq() {
 
   return (
     <Section aria-labelledby="faq-title">
-      <div className="mx-auto max-w-prose">
-        <SectionHeader id="faq-title" eyebrow={faq.eyebrow} title={faq.title} />
+      <div className="mx-auto max-w-prose lg:grid lg:max-w-none lg:grid-cols-[20rem_1fr] lg:items-start lg:gap-16">
+        <div className="lg:sticky lg:top-24 lg:[&>header]:mb-0">
+          <SectionHeader id="faq-title" eyebrow={faq.eyebrow} title={faq.title} lgStart />
+        </div>
         <ul className="flex flex-col gap-3">
           {faq.items.map((item, index) => {
             const expanded = open.has(item.id)

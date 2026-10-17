@@ -47,7 +47,7 @@ export function Timeline() {
       <ol
         data-timeline-list
         aria-label={timeline.listLabel}
-        className="relative mx-auto flex max-w-prose flex-col gap-12 pl-10"
+        className="relative mx-auto flex max-w-prose flex-col gap-12 pl-10 lg:max-w-content"
       >
         <span aria-hidden="true" className="absolute top-2 bottom-2 left-1.75 w-0.5 bg-line" />
         <span
@@ -62,10 +62,14 @@ export function Timeline() {
               data-timeline-dot
               className="absolute top-2 -left-10 size-4 rounded-pill border-2 border-ember-400 bg-canvas"
             />
-            <div data-timeline-body className="flex flex-col gap-2">
-              <p className="text-xs font-semibold tracking-widest text-crystal-300 uppercase">{item.date}</p>
-              <Heading level={3}>{item.title}</Heading>
-              <p className="text-ink-muted text-pretty">{item.description}</p>
+            <div data-timeline-body className="flex flex-col gap-2 lg:grid lg:grid-cols-[14rem_1fr] lg:gap-x-10">
+              <p className="text-xs font-semibold tracking-widest text-crystal-300 uppercase lg:col-start-1 lg:row-span-2 lg:pt-3">
+                {item.date}
+              </p>
+              <Heading level={3} className="lg:col-start-2">
+                {item.title}
+              </Heading>
+              <p className="text-ink-muted text-pretty lg:col-start-2">{item.description}</p>
             </div>
           </li>
         ))}

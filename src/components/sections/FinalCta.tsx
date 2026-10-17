@@ -16,16 +16,18 @@ export function FinalCta() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="relative isolate overflow-hidden rounded-lg border border-ember-700/60 bg-surface px-6 py-20 text-center shadow-card sm:px-12 lg:py-28"
+        className="relative isolate overflow-hidden rounded-lg border border-ember-700/60 bg-surface px-6 py-20 text-center shadow-card sm:px-12 lg:px-16 lg:py-28 lg:text-left"
       >
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10 bg-radial-[ellipse_70%_90%_at_50%_100%] from-ember-600/35 to-transparent"
         />
-        <div className="mx-auto flex max-w-prose flex-col items-center gap-6">
-          <RevealHeading id="final-cta-title" text={finalCta.title} className="text-5xl sm:text-6xl lg:text-7xl" />
-          <p className="text-lg text-ink-muted text-pretty sm:text-xl">{finalCta.text}</p>
-          <Button href={finalCta.cta.href} className="mt-2 px-10 py-4 text-base">
+        <div className="mx-auto flex max-w-prose flex-col items-center gap-6 lg:max-w-none lg:flex-row lg:justify-between lg:gap-16">
+          <div className="flex flex-col items-center gap-6 lg:max-w-3xl lg:items-start">
+            <RevealHeading id="final-cta-title" text={finalCta.title} className="text-5xl sm:text-6xl lg:text-7xl" />
+            <p className="text-lg text-ink-muted text-pretty sm:text-xl">{finalCta.text}</p>
+          </div>
+          <Button href={finalCta.cta.href} className="mt-2 shrink-0 px-10 py-4 text-base lg:mt-0">
             {finalCta.cta.label}
           </Button>
         </div>

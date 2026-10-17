@@ -53,21 +53,23 @@ export function Lore() {
         className="pointer-events-none absolute -inset-y-24 inset-x-0 -z-10 bg-[radial-gradient(ellipse_60%_40%_at_20%_30%,color-mix(in_oklab,var(--color-ember-700)_35%,transparent),transparent),radial-gradient(ellipse_50%_40%_at_85%_75%,color-mix(in_oklab,var(--color-crystal-600)_22%,transparent),transparent)]"
       />
       <Container>
-        <SectionHeader id="lore-title" eyebrow={lore.eyebrow} title={lore.title} />
-        <div className="mx-auto flex max-w-prose flex-col gap-10">
-          {lore.paragraphs.map((text, index) => (
+        <div className="lg:grid lg:grid-cols-[5fr_7fr] lg:items-start lg:gap-16">
+          <div className="lg:flex lg:flex-col lg:gap-8 lg:[&>header]:mb-0">
+            <SectionHeader id="lore-title" eyebrow={lore.eyebrow} title={lore.title} lgStart />
             <p
-              key={text}
               data-lore-block
-              className={`text-pretty ${
-                index === 0
-                  ? 'font-display text-3xl leading-snug text-ink sm:text-4xl'
-                  : 'text-lg leading-relaxed text-ink-muted'
-              }`}
+              className="mx-auto mb-10 max-w-prose font-display text-3xl leading-snug text-pretty text-ink sm:text-4xl lg:mx-0 lg:mb-0 lg:max-w-none lg:text-3xl"
             >
-              {text}
+              {lore.paragraphs[0]}
             </p>
-          ))}
+          </div>
+          <div className="mx-auto flex max-w-prose flex-col gap-10 lg:mx-0 lg:max-w-none">
+            {lore.paragraphs.slice(1).map((text) => (
+              <p key={text} data-lore-block className="text-lg leading-relaxed text-pretty text-ink-muted">
+                {text}
+              </p>
+            ))}
+          </div>
         </div>
       </Container>
     </section>

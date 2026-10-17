@@ -87,20 +87,21 @@ Todo en `public/` salvo el modelo original, que vive en `source-assets/` (fuera 
 | Modelo optimizado (el que carga la web) | `public/models/ashveil-hero.glb` | Objetivo < 3 MB (el actual: ~2,6 MB) |
 | Póster horizontal | `public/images/ashveil-hero-poster-landscape.webp` | 1600×900 px (16:9), < 60 KB |
 | Póster vertical | `public/images/ashveil-hero-poster-portrait.webp` | 720×1464 px (≈1:2), < 60 KB |
-| Póster de la travesía, horizontal | `public/images/ashveil-journey-poster-landscape.webp` | 1600×900 px (16:9), < 60 KB |
-| Póster de la travesía, vertical | `public/images/ashveil-journey-poster-portrait.webp` | 720×1464 px (≈1:2), < 60 KB |
+| Jungla de la travesía, horizontal | `public/images/ashveil-journey-jungle-landscape.webp` | 1600×900 px (16:9), < 140 KB |
+| Jungla de la travesía, vertical | `public/images/ashveil-journey-jungle-portrait.webp` | 720×1464 px (≈1:2), < 70 KB |
+| Originales de la jungla (fuente, **no se publican**) | `source-assets/journey-jungle/` | 4096×2336 y 1024×1792 |
 | Favicon | `public/favicon.svg` (ruta en `meta.favicon`) | SVG, o PNG 32×32 / 180×180; ICO también vale |
 | Imagen social | `public/images/ashveil-og.jpg` (ruta en `meta.ogImage`) | 1200×630 px. La actual es un recorte centrado del póster horizontal del hero; sustitúyela por una propia del cliente |
 | robots.txt | `public/robots.txt` | Permite todo. Si rellenas `meta.url`, añade `Sitemap: <url>/sitemap.xml` cuando tengas sitemap |
 
 ### Cambiar el modelo
 1. Sustituye `source-assets/ashveil-hero-original.glb` y ejecuta `npm run optimize:model` (texturas a 2048 px, meshopt).
-2. Si el modelo es otro, revisa en `src/components/three/` la posición del altar y los keyframes (`cameraPath.ts`), el encuadre y la iluminación (`HeroScene.tsx`); la escena está compuesta para el modelo actual.
+2. Si el modelo es otro, revisa en `src/components/three/` la posición del altar (`cameraPath.ts`), el encuadre y la iluminación (`HeroScene.tsx`); la escena está compuesta para el modelo actual.
 
 ### Regenerar los pósteres
-Los pósteres se usan sin WebGL, con reduced motion, en gama baja, en móvil/táctil (la travesía) y mientras carga el modelo. En móvil el póster del hero es el LCP: la escena 3D se monta después del evento `load` (`useAfterLoad`) y se funde sobre él al pintar su primer frame; en escritorio se monta de inmediato. Tienen que coincidir con la cámara real, o el paso a la escena 3D se nota como un salto. Hay cuatro: hero y travesía, cada uno horizontal y vertical.
+Los pósteres del hero se usan sin WebGL, con reduced motion, en gama baja, en móvil/táctil y mientras carga el modelo. En móvil el póster del hero es el LCP: la escena 3D se monta después del evento `load` (`useAfterLoad`) y se funde sobre él al pintar su primer frame; en escritorio se monta de inmediato. Tienen que coincidir con la cámara real, o el paso a la escena 3D se nota como un salto. Son dos: horizontal y vertical.
 
-El procedimiento exacto (viewports, qué ocultar, tamaños) está en [src/components/three/README.md](src/components/three/README.md#pósteres). Resumen: `npm run dev`, esperar a que cargue el modelo, ocultar todo salvo el `<canvas>`, capturarlo y exportar a WebP con los tamaños de la tabla, manteniendo el nombre. Si cambias el modelo o la cámara del hero, regenera los del hero; si cambias el keyframe 0 de `cameraPath.ts` o el modelo, regenera los de la travesía.
+El procedimiento exacto (viewports, qué ocultar, tamaños) está en [src/components/three/README.md](src/components/three/README.md#pósteres). Resumen: `npm run dev`, esperar a que cargue el modelo, ocultar todo salvo el `<canvas>`, capturarlo y exportar a WebP con los tamaños de la tabla, manteniendo el nombre. Si cambias el modelo o la cámara del hero, regenera los pósteres del hero. «La travesía» no usa 3D: sus dos imágenes de jungla se sustituyen por otras del mismo nombre y tamaño.
 
 ## Estructura de configuración
 - `src/config/site.ts` — contenido, metadatos y secciones activas (tipo `SiteConfig`).

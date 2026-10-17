@@ -18,7 +18,16 @@ No hace falta tocar componentes: todo se hace en cuatro sitios.
 - [ ] **Colores** — variables `--color-*` en `@theme` de `src/index.css` y, para la escena 3D, el mismo valor en `src/components/three/palette.ts`.
 - [ ] **Fuentes** — `--font-display` y `--font-sans` en `@theme`, y el `<link>` de Google Fonts en `index.html`.
 - [ ] **Modelo 3D** — sustituye `source-assets/ashveil-hero-original.glb`, ejecuta `npm run optimize:model` y revisa cámara e iluminación en `src/components/three/`.
-- [ ] **Pósteres del hero y de la travesía** — cuatro WebP en `public/images/` (procedimiento en `src/components/three/README.md`).
+- [ ] **Imágenes del hero y de la travesía** — cuatro WebP en `public/images/`. Los pósteres del hero son capturas de la escena 3D (procedimiento en `src/components/three/README.md`); las de la travesía son una ilustración de jungla que se sustituye por otra con el mismo nombre y tamaño:
+
+  | Archivo | Tamaño | Peso orientativo |
+  | --- | --- | --- |
+  | `ashveil-hero-poster-landscape.webp` | 1600×900 px (16:9) | < 60 KB |
+  | `ashveil-hero-poster-portrait.webp` | 720×1464 px (≈1:2) | < 60 KB |
+  | `ashveil-journey-jungle-landscape.webp` | 1600×900 px (16:9) | < 140 KB (actual: 131 KB) |
+  | `ashveil-journey-jungle-portrait.webp` | 720×1464 px (≈1:2) | < 70 KB (actual: 59 KB) |
+
+  La imagen de la travesía se muestra a pantalla completa con `object-cover` y se oscurece abajo y en los bordes, así que deja la parte inferior y el lado izquierdo oscuros: ahí va el texto. Si cambia el tamaño, actualiza `width` y `height` en `src/components/three/posters.ts`. Los originales de mayor resolución están en `source-assets/journey-jungle/`.
 - [ ] **Enlaces** — `nav.cta`, `hero.primaryCta`, `hero.secondaryCta`, `finalCta.cta` y `footer.links`. Sustituye los `#anclas` de ejemplo (`#jugar`, `#registro`, `#trailer`, `#terminos`…) por URL reales.
 - [ ] **Datos de ejemplo** — cifras y testimonios de `community` están marcados `isExample`; cámbialos por datos reales.
 - [ ] **Imagen social y favicon** — `public/images/ashveil-og.jpg` (1200×630) y `public/favicon.svg`.

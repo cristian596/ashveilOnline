@@ -241,9 +241,8 @@ export const site = {
       'Tú llegas tarde y a tiempo a la vez. El velo está herido, no muerto, y alguien tendrá que decidir si se cose, se rompe del todo o se hereda.',
     ],
   },
-  // Recorrido de cámara por las ruinas (sección sticky entre El mundo y la Temporada I).
-  // Cada paso es el texto de un tramo de la trayectoria; si añades o quitas pasos, revisa
-  // JOURNEY_KEYFRAMES en src/components/three/cameraPath.ts (un keyframe más que pasos).
+  // Recorrido por la jungla (sección sticky entre El mundo y la Temporada I): una imagen fija detrás y
+  // un texto por pantalla. Puedes añadir o quitar pasos sin tocar nada más.
   journey: {
     id: 'travesia',
     eyebrow: 'La travesía',

@@ -12,13 +12,7 @@ import {
   type Points,
 } from 'three'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
-import {
-  ALTAR,
-  JOURNEY_KEYFRAMES,
-  PORTRAIT_FOV_BOOST,
-  createCameraPath,
-  type ScrollProgress,
-} from './cameraPath'
+import { ALTAR } from './cameraPath'
 import { disposeObject } from './dispose'
 import { scenePalette } from './palette'
 
@@ -100,49 +94,19 @@ function CameraRig({ parallax }: { parallax: boolean }) {
   return null
 }
 
-const sampleJourney = createCameraPath(JOURNEY_KEYFRAMES)
-
-/** Cámara sobre la trayectoria de cameraPath.ts, guiada por el progreso del scroll. */
-function PathRig({ progress }: { progress: ScrollProgress }) {
-  const portrait = useThree((state) => state.size.width < state.size.height)
-  const lookAt = useMemo(() => new Vector3(), [])
-
-  useFrame(({ camera }) => {
-    // ScrollTrigger ya suaviza el progreso (scrub), así que aquí se aplica tal cual.
-    const fov = sampleJourney(progress.current, camera.position, lookAt) + (portrait ? PORTRAIT_FOV_BOOST : 0)
-    if (camera instanceof PerspectiveCamera && Math.abs(camera.fov - fov) > 0.01) {
-      camera.fov = fov
-      camera.updateProjectionMatrix()
-    }
-    camera.lookAt(lookAt)
-  })
-
-  return null
-}
-
 // ── Modelo ──────────────────────────────────────────────────────────
 
-/** Canvas que usan ahora el modelo. Cuando llega a 0 se liberan la GPU y la caché de useGLTF. */
-let modelUsers = 0
 let pendingRelease: number | undefined
 
-/**
- * El hero y la travesía comparten el GLB cargado (useGLTF lo cachea por URL): cada canvas monta un
- * clon, que reutiliza geometría, materiales y texturas. No se puede montar el mismo objeto en dos
- * escenas a la vez: three.js lo movería de una a otra.
- */
+/** Al desmontar se liberan la GPU y la caché de useGLTF. */
 function Ruins() {
   const { scene } = useGLTF(MODEL_URL, false, true)
-  const instance = useMemo(() => scene.clone(), [scene])
 
   useEffect(() => {
-    modelUsers++
     // StrictMode desmonta y vuelve a montar en desarrollo: cancelamos la liberación si el remontaje
     // llega antes del timeout.
     window.clearTimeout(pendingRelease)
     return () => {
-      modelUsers--
-      if (modelUsers > 0) return
       pendingRelease = window.setTimeout(() => {
         disposeObject(scene)
         useGLTF.clear(MODEL_URL)
@@ -150,7 +114,7 @@ function Ruins() {
     }
   }, [scene])
 
-  return <primitive object={instance} />
+  return <primitive object={scene} />
 }
 
 // ── Brasas ──────────────────────────────────────────────────────────
@@ -282,13 +246,7 @@ function ReadySignal({ onReady }: { onReady: () => void }) {
 
 // ── Canvas ──────────────────────────────────────────────────────────
 
-interface HeroSceneProps {
-  onReady: () => void
-  /** Sin él: cámara fija del hero con parallax. Con él: cámara sobre la trayectoria de la travesía. */
-  cameraPath?: ScrollProgress
-}
-
-export default function HeroScene({ onReady, cameraPath }: HeroSceneProps) {
+export default function HeroScene({ onReady }: { onReady: () => void }) {
   const wrapper = useRef<HTMLDivElement>(null)
   const [inView, setInView] = useState(true)
   const reducedMotion = usePrefersReducedMotion()
@@ -324,7 +282,7 @@ export default function HeroScene({ onReady, cameraPath }: HeroSceneProps) {
         <directionalLight position={[-1.2, 1.4, 0.9]} color={scenePalette.ember400} intensity={2.6} />
         <CrystalLight animate={!reducedMotion} />
 
-        {cameraPath ? <PathRig progress={cameraPath} /> : <CameraRig parallax={!reducedMotion} />}
+        <CameraRig parallax={!reducedMotion} />
         <Embers animate={!reducedMotion} />
         <Suspense fallback={null}>
           <Ruins />

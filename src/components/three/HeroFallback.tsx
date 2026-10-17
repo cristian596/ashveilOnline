@@ -1,16 +1,14 @@
-import { PORTRAIT_MEDIA, POSTERS, type PosterVariant } from './posters'
-
-export type { PosterVariant }
+import { PORTRAIT_MEDIA, POSTERS } from './posters'
 
 /**
  * Versión estática del hero 3D: se usa sin WebGL, con reduced motion o en gama baja, y como
- * placeholder mientras carga el modelo. Las capturas tienen el mismo encuadre horizontal y vertical que
- * la escena: una con la cámara de reposo del hero y otra con el keyframe 0 de «La travesía». Si cambias
- * la cámara o la iluminación en HeroScene o cameraPath, vuelve a capturarlas (ver README). Los degradados imitan la composición (altar azul en el
- * centro, luz de brasa desde arriba a la izquierda) por si la imagen tampoco llega a cargar.
+ * placeholder mientras carga el modelo. La captura tiene el mismo encuadre horizontal y vertical que
+ * la cámara de reposo del hero. Si cambias la cámara o la iluminación en HeroScene, vuelve a capturarla
+ * (ver README). Los degradados imitan la composición (altar azul en el centro, luz de brasa desde
+ * arriba a la izquierda) por si la imagen tampoco llega a cargar.
  */
-export function HeroFallback({ variant = 'hero' }: { variant?: PosterVariant }) {
-  const poster = POSTERS[variant]
+export function HeroFallback() {
+  const poster = POSTERS.hero
   return (
     <div className="absolute inset-0 bg-canvas">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_30%_25%,color-mix(in_oklab,var(--color-ember-700)_45%,transparent)_0%,transparent_70%)]" />
@@ -24,9 +22,9 @@ export function HeroFallback({ variant = 'hero' }: { variant?: PosterVariant }) 
           height={poster.landscape.height}
           alt=""
           decoding="async"
-          // Solo el póster del hero es candidato a LCP; el de la travesía queda lejos del primer viewport.
-          loading={variant === 'hero' ? 'eager' : 'lazy'}
-          fetchPriority={variant === 'hero' ? 'high' : 'auto'}
+          // Es el candidato a LCP: se pide ya y con prioridad.
+          loading="eager"
+          fetchPriority="high"
           className="absolute inset-0 size-full object-cover"
         />
       </picture>

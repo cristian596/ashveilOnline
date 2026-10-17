@@ -1,45 +1,27 @@
 import { useRef } from 'react'
 import { site } from '../../config/site'
-import { MOBILE, useMediaQuery } from '../../hooks/useMediaQuery'
-import { useNearViewport } from '../../hooks/useNearViewport'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { gsap, useGSAP } from '../../lib/gsap'
 import { Container } from '../layout/Container'
-import { HeroBackdrop } from '../three/HeroBackdrop'
+import { PORTRAIT_MEDIA, POSTERS } from '../three/posters'
 import { Badge } from '../ui/Badge'
 import { Heading } from '../ui/Heading'
 import { RevealHeading } from '../ui/RevealHeading'
 
 /**
- * «La travesía»: un escenario sticky de una pantalla con la escena del hero detrás y los textos
- * pasando por encima, una pantalla cada uno. Mientras el escenario está fijado, el scroll mueve la
- * cámara por la trayectoria de three/cameraPath.ts.
- *
- * En móvil, gama baja, sin WebGL o con reduced motion: el póster estático y los mismos textos.
+ * «La travesía»: un escenario sticky de una pantalla con la imagen de la jungla detrás y los textos
+ * pasando por encima, una pantalla cada uno. La imagen es la misma en escritorio y en móvil (versión
+ * horizontal o vertical según el viewport); no hay WebGL en esta sección.
  */
 export function Journey() {
   const { journey } = site
   const reduced = usePrefersReducedMotion()
-  const mobile = useMediaQuery(MOBILE)
   const root = useRef<HTMLElement>(null)
-  // Lo escribe ScrollTrigger y lo lee la escena en cada frame: un ref, para no re-renderizar.
-  const progress = useRef(0)
-  // El canvas se monta cuando la sección está a una pantalla de distancia, y ya no se desmonta.
-  const near = useNearViewport(root)
-  const live = !reduced && !mobile
+  const scene = POSTERS.journey
 
   useGSAP(
     () => {
       if (reduced) return
-
-      if (live) {
-        // De «top top» a «bottom bottom» es justo el tramo en el que el escenario está fijado.
-        gsap.to(progress, {
-          current: 1,
-          ease: 'none',
-          scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom bottom', scrub: 1 },
-        })
-      }
 
       gsap.utils.toArray<HTMLElement>('[data-journey-step]').forEach((step) => {
         gsap.from(step, {
@@ -51,7 +33,7 @@ export function Journey() {
         })
       })
     },
-    { scope: root, dependencies: [reduced, live], revertOnUpdate: true },
+    { scope: root, dependencies: [reduced], revertOnUpdate: true },
   )
 
   return (
@@ -64,7 +46,23 @@ export function Journey() {
     >
       {/* Escenario: fijado mientras se recorre la sección. Sin overflow-hidden en la section, o sticky deja de funcionar. */}
       <div className="sticky top-0 h-svh overflow-hidden">
-        <HeroBackdrop cameraPath={progress} allowLive={live && near} poster="journey" />
+        <picture>
+          <source
+            media={PORTRAIT_MEDIA}
+            srcSet={scene.portrait.src}
+            width={scene.portrait.width}
+            height={scene.portrait.height}
+          />
+          <img
+            src={scene.landscape.src}
+            width={scene.landscape.width}
+            height={scene.landscape.height}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 size-full object-cover"
+          />
+        </picture>
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 bg-radial-[ellipse_80%_75%_at_50%_45%] from-transparent from-45% to-canvas"

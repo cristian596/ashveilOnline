@@ -3,8 +3,8 @@
 ## Qué incluye
 
 - Landing de una página en React 19 + Vite + TypeScript + Tailwind CSS 4, con GSAP, Lenis, Framer Motion y React Three Fiber.
-- Hero con escena 3D y sección «La travesía» con scroll, más las secciones de pilares, clases, lore, línea de tiempo, comunidad, FAQ y CTA final (todas activables desde `site.ts`).
-- Pósteres sin WebGL (hero y travesía, horizontal y vertical), modelo 3D optimizado y modelo original en `source-assets/`.
+- Hero con escena 3D y sección «La travesía» con scroll sobre una imagen de jungla, más las secciones de pilares, clases, lore, línea de tiempo, comunidad, FAQ y CTA final (todas activables desde `site.ts`).
+- Pósteres sin WebGL del hero y imágenes de jungla de la travesía (horizontal y vertical), modelo 3D optimizado y modelo original en `source-assets/`.
 - Metadatos, Open Graph y favicon generados desde `site.ts`.
 - Comprobación de colores y contraste (`npm run check:tokens`).
 - Documentación en `docs/`, `THIRD_PARTY.md` y `LICENSE` (plantilla con marcador).

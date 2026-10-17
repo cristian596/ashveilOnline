@@ -38,6 +38,7 @@ Se cargan desde Google Fonts en `index.html`; no se incluyen en el paquete.
 
 ## Pósteres e imágenes
 
-- `public/images/ashveil-hero-poster-*.webp` y `ashveil-journey-poster-*.webp`: capturas de la escena 3D, es decir, derivados del modelo anterior; les aplican los mismos términos.
+- `public/images/ashveil-hero-poster-*.webp`: capturas de la escena 3D, es decir, derivados del modelo anterior; les aplican los mismos términos.
+- `public/images/ashveil-journey-jungle-*.webp` (y los originales de `source-assets/journey-jungle/`): ilustración de la jungla de «La travesía». **[PENDIENTE: indica el origen y la licencia de estas imágenes.]**
 - `public/images/ashveil-og.jpg`: recorte del póster horizontal del hero; mismos términos.
 - `public/favicon.svg`: **[PENDIENTE: indica el origen y la licencia del favicon.]**
